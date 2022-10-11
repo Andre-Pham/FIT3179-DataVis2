@@ -1,0 +1,201 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": 450,
+    "projection": {
+        "type": "mercator",
+        "center": {
+            "expr": "LATLONG_PARAM"
+        },
+        "scale": {
+            "expr": "SCALE_PARAM"
+        }
+    },
+    "params": [
+        {
+            "name": "YEAR_PARAM",
+            "value": 2000,
+            "bind": {
+                "input": "range",
+                "min": 1980,
+                "max": 2022,
+                "step": 1,
+                "name": "YEAR: "
+            }
+        },
+        {
+            "name": "SCALE_PARAM",
+            "value": 700,
+            "bind": {
+                "input": "range",
+                "min": 700,
+                "max": 1600,
+                "step": 100,
+                "name": "ZOOM: "
+            }
+        },
+        {
+            "name": "LATLONG_PARAM",
+            "value": [
+                -98,
+                39
+            ],
+            "bind": {
+                "input": "select",
+                "options": [
+                    [
+                        -98,
+                        39
+                    ],
+                    [
+                        -74.0059413,
+                        40.7127837
+                    ],
+                    [
+                        -118.2436849,
+                        34.0522342
+                    ],
+                    [
+                        -87.6297982,
+                        41.8781136
+                    ],
+                    [
+                        -95.3698028,
+                        29.7604267
+                    ]
+                ],
+                "labels": [
+                    "Geographic Centre",
+                    "New York",
+                    "Los Angeles",
+                    "Chicago",
+                    "Houston"
+                ],
+                "name": "POSITION: "
+            }
+        }
+    ],
+    "layer": [
+        {
+            "data": {
+                "url": "spatial/ne_50m_admin_1_states_provinces.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "ne_50m_admin_1_states_provinces"
+                }
+            },
+            "mark": {
+                "type": "geoshape",
+                "fill": "#dee2e6",
+                "stroke": "#dee2e6"
+            }
+        },
+        {
+            "data": {
+                "url": "spatial/ne_110m_graticules_5_crop.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "ne_110m_graticules_5"
+                }
+            },
+            "mark": {
+                "type": "geoshape",
+                "stroke": "gray",
+                "fillOpacity": 0,
+                "strokeOpacity": 0.2
+            }
+        },
+        {
+            "data": {
+                "url": "spatial/cbsa_us_2014_ex_hi_ak.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "cbsa_2014_us_ex_hi_ak"
+                }
+            },
+            "transform": [
+                {
+                    "calculate": "'Year ' + YEAR_PARAM + ' data not available for CBSA ' + datum.properties.GEOID",
+                    "as": "note"
+                }
+            ],
+            "mark": {
+                "type": "geoshape",
+                "stroke": "white",
+                "fill": "#dee2e6"
+            },
+            "encoding": {
+                "tooltip": {
+                    "field": "note"
+                }
+            }
+        },
+        {
+            "data": {
+                "url": "data/choropleth/us_aqi_by_year.csv"
+            },
+            "transform": [
+                {
+                    "lookup": "CBSA",
+                    "from": {
+                        "data": {
+                            "url": "spatial/cbsa_us_2014_ex_hi_ak.topojson",
+                            "format": {
+                                "type": "topojson",
+                                "feature": "cbsa_2014_us_ex_hi_ak"
+                            }
+                        },
+                        "key": "properties.GEOID"
+                    },
+                    "as": "geo"
+                },
+                {
+                    "filter": "datum.YEAR == YEAR_PARAM"
+                }
+            ],
+            "mark": {
+                "type": "geoshape",
+                "stroke": "white"
+            },
+            "encoding": {
+                "shape": {
+                    "field": "geo",
+                    "type": "geojson"
+                },
+                "color": {
+                    "field": "AQI",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "threshold",
+                        "domain": [50, 100],
+                        "range": ["#51cf66", "#fcc419", "#ff6b6b"]
+                    }
+                },
+                "tooltip": [
+                    {
+                        "field": "YEAR",
+                        "type": "nominal",
+                        "title": "Year"
+                    },
+                    {
+                        "field": "CBSA",
+                        "type": "nominal",
+                        "title": "CBSA"
+                    },
+                    {
+                        "field": "AQI",
+                        "type": "quantitative",
+                        "format": ".2f"
+                    }
+                ]
+            }
+        }
+    ],
+    "config": {
+        "style": {
+            "cell": {
+                "stroke": "transparent"
+            }
+        }
+    }
+}

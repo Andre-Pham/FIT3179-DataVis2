@@ -1,0 +1,141 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "data": {
+        "url": "data/areachart/us_emissions.csv"
+    },
+    "params": [
+        {
+            "name": "source_filter",
+            "bind": {
+                "input": "select",
+                "options": [
+                    null,
+                    "Highway vehicles",
+                    "Off-Highway",
+                    "Fuel combustion",
+                    "Industrial processes",
+                    "Waste disposal and recycling",
+                    "Miscellaneous"
+                ],
+                "labels": [
+                    "Show all",
+                    "Highway vehicles",
+                    "Off-Highway",
+                    "Fuel combustion",
+                    "Industrial processes",
+                    "Waste disposal and recycling",
+                    "Miscellaneous"
+                ],
+                "name": "SOURCE: "
+            }
+        }
+    ],
+    "transform": [
+        {
+            "filter": "source_filter == null || datum.SOURCE == source_filter"
+        }
+    ],
+    "encoding": {
+        "x": {
+            "field": "YEAR",
+            "type": "temporal",
+            "timeUnit": "year",
+            "title": "Year"
+        },
+        "y": {
+            "field": "MEASUREMENT",
+            "type": "quantitative",
+            "title": "VOC Emissions (10e6 Metric Tones)",
+            "aggregate": "sum"
+        },
+        "color": {
+            "field": "SOURCE",
+            "title": "Source",
+            "type": "nominal",
+            "scale": {
+                "domain": [
+                    "Highway vehicles",
+                    "Off-Highway",
+                    "Fuel combustion",
+                    "Industrial processes",
+                    "Waste disposal and recycling",
+                    "Miscellaneous"
+                ],
+                "range": [
+                    "#2C363F",
+                    "#ff6b6b",
+                    "#1B98E0",
+                    "#FBBA72",
+                    "#7D77D1",
+                    "#92BFB1"
+                ]
+            }
+        }
+    },
+    "layer": [
+        {
+            "mark": {
+                "type": "area"
+            },
+            "encoding": {
+                "tooltip": [
+                    {
+                        "field": "SOURCE",
+                        "type": "ordinal",
+                        "title": "Source"
+                    },
+                    {
+                        "field": "MEASUREMENT",
+                        "type": "quantitative",
+                        "title": "VOC (10e6 Tones)"
+                    },
+                    {
+                        "field": "YEAR",
+                        "type": "temporal",
+                        "timeUnit": "year",
+                        "title": "Year"
+                    }
+                ]
+            }
+        },
+        {
+            "encoding": {
+                "x": {
+                    "aggregate": "max",
+                    "field": "YEAR"
+                },
+                "y": {
+                    "aggregate": {
+                        "argmax": "YEAR"
+                    },
+                    "field": "MEASUREMENT"
+                }
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "left",
+                        "dx": 10,
+                        "fontSize": 13
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "DIFF",
+                            "type": "nominal"
+                        },
+                        "opacity": {
+                            "condition": {
+                                "test": "source_filter == null",
+                                "value": 0
+                            },
+                            "value": 1
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "config": {}
+}

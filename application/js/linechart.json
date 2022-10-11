@@ -1,0 +1,223 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": 250,
+    "data": {
+        "url": "data/linechart/aqi_by_year_with_percentiles.csv"
+    },
+    "layer": [
+        {
+            "mark": "errorband",
+            "encoding": {
+                "y": {
+                    "field": "PERCENTILE75",
+                    "type": "quantitative",
+                    "scale": {
+                        "zero": false
+                    }
+                },
+                "y2": {
+                    "field": "PERCENTILE25"
+                },
+                "x": {
+                    "field": "YEAR",
+                    "type": "temporal",
+                    "timeUnit": "year",
+                    "title": "Year"
+                },
+                "color": {
+                    "value": "#f03e3e"
+                }
+            }
+        },
+        {
+            "encoding": {
+                "x": {
+                    "field": "YEAR",
+                    "type": "temporal",
+                    "timeUnit": "year",
+                    "title": "Year"
+                },
+                "y": {
+                    "field": "PERCENTILE50",
+                    "type": "quantitative",
+                    "title": "AQI"
+                },
+                "color": {
+                    "value": "#f03e3e"
+                },
+                "tooltip": [
+                    {
+                        "field": "AQI",
+                        "type": "quantitative",
+                        "title": "AQI"
+                    },
+                    {
+                        "field": "YEAR",
+                        "type": "temporal",
+                        "timeUnit": "year",
+                        "title": "Year"
+                    }
+                ]
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "line",
+                        "strokeWidth": 3
+                    }
+                }
+            ]
+        },
+        {
+            "params": [
+                {
+                    "name": "index",
+                    "value": [
+                        {
+                            "x": {
+                                "year": 2000
+                            }
+                        }
+                    ],
+                    "select": {
+                        "type": "point",
+                        "encodings": [
+                            "x"
+                        ],
+                        "on": "mouseover",
+                        "nearest": true
+                    }
+                }
+            ],
+            "mark": "point",
+            "encoding": {
+                "x": {
+                    "field": "YEAR",
+                    "type": "ordinal",
+                    "timeUnit": "year"
+                },
+                "opacity": {
+                    "value": 0
+                }
+            }
+        },
+        {
+            "transform": [
+                {
+                    "filter": {
+                        "param": "index"
+                    }
+                },
+                {
+                    "calculate": "'Median AQI: ' + datum.PERCENTILE50",
+                    "as": "median"
+                },
+                {
+                    "calculate": "'25th Percentile: ' + datum.PERCENTILE25",
+                    "as": "percentile_25"
+                },
+                {
+                    "calculate": "'75th Percentile: ' + datum.PERCENTILE75",
+                    "as": "percentile_75"
+                }
+            ],
+            "encoding": {
+                "x": {
+                    "field": "YEAR",
+                    "type": "ordinal",
+                    "timeUnit": "year"
+                },
+                "color": {
+                    "value": "black"
+                }
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "rule",
+                        "strokeWidth": 1
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "align": "left",
+                        "fontSize": 18,
+                        "dx": {
+                            "expr": "datum.YEAR < 1262304000000 ? 10 : -150"
+                        }
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "YEAR",
+                            "type": "ordinal",
+                            "timeUnit": "year"
+                        },
+                        "y": {
+                            "value": 20
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "align": "left",
+                        "fontSize": 12,
+                        "dx": {
+                            "expr": "datum.YEAR < 1262304000000 ? 10 : -150"
+                        }
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "median"
+                        },
+                        "y": {
+                            "value": 40
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "align": "left",
+                        "fontSize": 12,
+                        "dx": {
+                            "expr": "datum.YEAR < 1262304000000 ? 10 : -150"
+                        }
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "percentile_25"
+                        },
+                        "y": {
+                            "value": 55
+                        }
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "fontWeight": "bold",
+                        "align": "left",
+                        "fontSize": 12,
+                        "dx": {
+                            "expr": "datum.YEAR < 1262304000000 ? 10 : -150"
+                        }
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "percentile_75"
+                        },
+                        "y": {
+                            "value": 70
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
