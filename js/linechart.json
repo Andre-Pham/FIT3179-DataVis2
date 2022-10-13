@@ -26,7 +26,7 @@
                     "title": "Year"
                 },
                 "color": {
-                    "value": "#f03e3e"
+                    "value": "#61db75"
                 }
             }
         },
@@ -44,7 +44,7 @@
                     "title": "AQI"
                 },
                 "color": {
-                    "value": "#f03e3e"
+                    "value": "#45c75b"
                 },
                 "tooltip": [
                     {
