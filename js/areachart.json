@@ -3,7 +3,10 @@
     "width": "container",
     "title": {
         "text": "Figure 3: Annual U.S. VOC Emissions, 1970 - 2022",
-        "fontStyle": "italic"
+        "fontStyle": "italic",
+        "font": "Roboto",
+        "fontWeight": 500,
+        "fontSize": 14
     },
     "data": {
         "url": "data/areachart/us_emissions.csv"

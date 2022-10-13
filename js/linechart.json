@@ -3,7 +3,10 @@
     "width": "container",
     "title": {
         "text": "Figure 2: Median and 25th/75th Percentiles of AQI Across CBSAs, 1980 - 2022",
-        "fontStyle": "italic"
+        "fontStyle": "italic",
+        "font": "Roboto",
+        "fontWeight": 500,
+        "fontSize": 14
     },
     "height": 250,
     "data": {
