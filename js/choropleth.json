@@ -1,6 +1,11 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": "container",
+    "title": {
+        "text": "Figure 1: Mean AQI by CBSA, 1980 - 2022",
+        "fontStyle": "italic",
+        "anchor": "start"
+    },
     "height": 450,
     "projection": {
         "type": "mercator",
