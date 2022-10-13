@@ -82,10 +82,26 @@
     },
     "layer": [
         {
+            "params": [
+                {
+                    "name": "source_opacity",
+                    "select": {
+                        "type": "point", "fields": ["SOURCE"]
+                    },
+                    "bind": "legend"
+                }
+            ],
             "mark": {
                 "type": "area"
             },
             "encoding": {
+                "opacity": {
+                    "condition": {
+                        "param": "source_opacity",
+                        "value": 1
+                    },
+                    "value": 0.2
+                },
                 "tooltip": [
                     {
                         "field": "SOURCE",
