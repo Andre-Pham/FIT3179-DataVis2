@@ -122,7 +122,7 @@
             "mark": {
                 "type": "geoshape",
                 "stroke": "white",
-                "fill": "#dee2e6"
+                "fill": "#c3c9d0"
             },
             "encoding": {
                 "tooltip": {

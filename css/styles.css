@@ -13,7 +13,7 @@ h2 {
 p {
     font-family: 'Roboto', sans-serif;
     color:#495057;
-	text-align: left;;
+	text-align: left;
 	max-width: 60ch;
 }
 
@@ -78,4 +78,12 @@ h1 {
 	font-weight: bold;
 	font-weight: 500;
 	font-size: 14.4px;
+	max-width: none;
+}
+
+.center-image {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
 }
